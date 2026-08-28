@@ -11,10 +11,17 @@ public sealed class DuckGameService
         new(50, "Lord of the wings"),
     ];
 
-    public int CountDuck(int score)
+    public int CountBird(int score, BirdKind bird)
     {
         EnsureValidScore(score);
-        return checked(score + 1);
+        var points = bird switch
+        {
+            BirdKind.Duck => 1,
+            BirdKind.Swan => 5,
+            _ => throw new ArgumentOutOfRangeException(nameof(bird), bird, "Unknown bird kind."),
+        };
+
+        return checked(score + points);
     }
 
     public DuckRank RankFor(int score)
@@ -45,3 +52,9 @@ public sealed class DuckGameService
 }
 
 public sealed record DuckRank(int MinimumScore, string Name);
+
+public enum BirdKind
+{
+    Duck,
+    Swan,
+}

@@ -7,10 +7,18 @@ public sealed class DuckGameServiceTests
 {
     private readonly DuckGameService service = new();
 
-    [Fact]
-    public void CountDuckAddsOneToTheScore()
+    [Theory]
+    [InlineData(BirdKind.Duck, 1)]
+    [InlineData(BirdKind.Swan, 5)]
+    public void CountBirdAddsThePointsForTheBird(BirdKind bird, int expectedPoints)
     {
-        Assert.Equal(8, service.CountDuck(7));
+        Assert.Equal(7 + expectedPoints, service.CountBird(7, bird));
+    }
+
+    [Fact]
+    public void CountBirdRejectsUnknownBirdKinds()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => service.CountBird(0, (BirdKind)999));
     }
 
     [Theory]
@@ -47,7 +55,7 @@ public sealed class DuckGameServiceTests
     }
 
     [Theory]
-    [InlineData(nameof(DuckGameService.CountDuck))]
+    [InlineData(nameof(DuckGameService.CountBird))]
     [InlineData(nameof(DuckGameService.RankFor))]
     [InlineData(nameof(DuckGameService.FlockLimitFor))]
     [InlineData(nameof(DuckGameService.SpawnDelayFor))]
@@ -55,7 +63,7 @@ public sealed class DuckGameServiceTests
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => rule switch
         {
-            nameof(DuckGameService.CountDuck) => service.CountDuck(-1),
+            nameof(DuckGameService.CountBird) => service.CountBird(-1, BirdKind.Duck),
             nameof(DuckGameService.RankFor) => service.RankFor(-1).MinimumScore,
             nameof(DuckGameService.FlockLimitFor) => service.FlockLimitFor(-1),
             _ => (int)service.SpawnDelayFor(-1).TotalMilliseconds,
