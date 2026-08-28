@@ -1,0 +1,177 @@
+@page "/"
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+@inject DuckGameService DuckGame
+
+<PageTitle>Click-a-Duck</PageTitle>
+
+<div class="game-page">
+    <section class="game-intro">
+        <p class="eyebrow">No ducks were inconvenienced</p>
+        <h1>Click-a-Duck</h1>
+        <p>Spot a duck. Give it a click. Try to keep up when the whole flock gets involved.</p>
+    </section>
+
+    <section class="game-card" aria-labelledby="game-heading">
+        <h2 id="game-heading" class="visually-hidden">Duck counting game</h2>
+
+        <div class="scoreboard">
+            <div class="score-block" aria-live="polite" aria-atomic="true">
+                <span>Score</span>
+                <strong>@score</strong>
+            </div>
+            <div class="rank-block">
+                <span>Current rank</span>
+                <strong>@CurrentRank.Name</strong>
+            </div>
+            <div class="game-actions">
+                <button class="control-button" type="button" @onclick="TogglePause">
+                    @(isPaused ? "Resume" : "Pause")
+                </button>
+                <button class="control-button control-button--quiet" type="button" @onclick="ResetGame">
+                    Reset
+                </button>
+            </div>
+        </div>
+
+        <div class="@PondClass" role="group" aria-label="Duck pond. Click the moving ducks to count them.">
+            <div class="sun" aria-hidden="true"></div>
+            <div class="cloud cloud--one" aria-hidden="true"></div>
+            <div class="cloud cloud--two" aria-hidden="true"></div>
+            <div class="reed reed--one" aria-hidden="true"></div>
+            <div class="reed reed--two" aria-hidden="true"></div>
+
+            @foreach (var duck in ducks)
+            {
+                <button class="duck @duck.DirectionClass"
+                        @key="duck.Id"
+                        style="@DuckStyle(duck)"
+                        type="button"
+                        aria-label="Count this duck"
+                        @onclick="() => CountDuck(duck.Id)">
+                    <img src="images/click-a-duck.png" alt="" draggable="false" />
+                </button>
+            }
+
+            @if (isPaused)
+            {
+                <div class="pause-card" role="status">
+                    <strong>Pond paused</strong>
+                    <span>The ducks are pretending this was their idea.</span>
+                </div>
+            }
+
+            <div class="water-line" aria-hidden="true"></div>
+        </div>
+
+        <div class="game-footer">
+            <p>Click every duck you can catch. A larger, faster flock arrives as your score climbs.</p>
+            <span>@ducks.Count duck@(ducks.Count == 1 ? "" : "s") on the pond</span>
+        </div>
+    </section>
+</div>
+
+@code {
+    private readonly CancellationTokenSource cancellation = new();
+    private readonly List<DuckTarget> ducks = [];
+    private int score;
+    private bool isPaused;
+    private Task? spawnLoop;
+
+    private DuckRank CurrentRank => DuckGame.RankFor(score);
+    private string PondClass => isPaused ? "pond pond--paused" : "pond";
+
+    protected override void OnInitialized()
+    {
+        AddDuck(startInPond: true);
+        AddDuck(startInPond: true);
+        AddDuck(startInPond: true);
+        spawnLoop = GrowFlockAsync(cancellation.Token);
+    }
+
+    private void CountDuck(Guid id)
+    {
+        if (isPaused)
+        {
+            return;
+        }
+
+        var removed = ducks.RemoveAll(duck => duck.Id == id);
+        if (removed == 1)
+        {
+            score = DuckGame.CountDuck(score);
+            AddDuck();
+        }
+    }
+
+    private void TogglePause() => isPaused = !isPaused;
+
+    private void ResetGame()
+    {
+        score = 0;
+        isPaused = false;
+        ducks.Clear();
+        AddDuck(startInPond: true);
+        AddDuck(startInPond: true);
+        AddDuck(startInPond: true);
+    }
+
+    private async Task GrowFlockAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                await Task.Delay(DuckGame.SpawnDelayFor(score), cancellationToken);
+                await InvokeAsync(() =>
+                {
+                    if (!isPaused && ducks.Count < DuckGame.FlockLimitFor(score))
+                    {
+                        AddDuck();
+                        StateHasChanged();
+                    }
+                });
+            }
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+        }
+    }
+
+    private void AddDuck(bool startInPond = false)
+    {
+        var fromLeft = Random.Shared.Next(2) == 0;
+        var duration = Random.Shared.Next(8, 15);
+        ducks.Add(new DuckTarget(
+            Guid.NewGuid(),
+            Random.Shared.Next(8, 72),
+            Random.Shared.Next(74, 121),
+            duration,
+            startInPond ? Random.Shared.Next(-duration + 1, 0) : 0,
+            Random.Shared.Next(-7, 8),
+            fromLeft ? "duck--from-left" : "duck--from-right"));
+    }
+
+    private static string DuckStyle(DuckTarget duck) => FormattableString.Invariant(
+        $"--duck-top: {duck.TopPercent}%; --duck-size: {duck.SizePixels}px; --duck-speed: {duck.DurationSeconds}s; --duck-delay: {duck.DelaySeconds}s; --duck-tilt: {duck.TiltDegrees}deg;");
+
+    public async ValueTask DisposeAsync()
+    {
+        await cancellation.CancelAsync();
+        if (spawnLoop is not null)
+        {
+            await spawnLoop;
+        }
+
+        cancellation.Dispose();
+    }
+
+    private sealed record DuckTarget(
+        Guid Id,
+        int TopPercent,
+        int SizePixels,
+        int DurationSeconds,
+        int DelaySeconds,
+        int TiltDegrees,
+        string DirectionClass);
+}

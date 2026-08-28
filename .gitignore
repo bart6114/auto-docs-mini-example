@@ -1,0 +1,16 @@
+# .NET
+**/bin/
+**/obj/
+*.user
+*.suo
+
+# Docusaurus
+docs/node_modules/
+docs/build/
+docs/.docusaurus/
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+

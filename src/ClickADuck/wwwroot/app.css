@@ -1,0 +1,500 @@
+:root {
+    color-scheme: light;
+    font-family: Inter, ui-rounded, "Arial Rounded MT Bold", system-ui, sans-serif;
+    background: #f7f1dc;
+    color: #18323a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 20rem;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at 15% 5%, rgb(255 218 99 / 38%), transparent 24rem),
+        linear-gradient(180deg, #fffdf5 0%, #f4edda 100%);
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a {
+    color: inherit;
+}
+
+button {
+    font: inherit;
+}
+
+.shell {
+    width: min(76rem, calc(100% - 2.5rem));
+    min-height: 100vh;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+}
+
+header,
+footer {
+    padding: 1.15rem 0;
+}
+
+header {
+    position: relative;
+    z-index: 10;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.65rem;
+    color: #173f47;
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    text-decoration: none;
+}
+
+.brand span,
+footer {
+    color: #60777b;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+main {
+    align-self: center;
+    padding: 1rem 0 2rem;
+}
+
+.game-page {
+    padding-bottom: 1rem;
+}
+
+.game-intro {
+    max-width: 50rem;
+    margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+    margin: 0 0 0.4rem;
+    color: #167c70;
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 0;
+    color: #153a42;
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    line-height: 0.86;
+    letter-spacing: -0.075em;
+}
+
+.game-intro > p:last-child {
+    max-width: 42rem;
+    margin: 1rem 0 0;
+    color: #536d72;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+.game-card {
+    overflow: hidden;
+    border: 1px solid rgb(18 84 88 / 22%);
+    border-radius: 1.5rem;
+    background: #fffdf7;
+    box-shadow: 0 1.5rem 4rem rgb(44 76 69 / 13%);
+}
+
+.scoreboard {
+    min-height: 5.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 0.85rem 1rem 0.85rem 1.25rem;
+    border-bottom: 1px solid rgb(18 84 88 / 16%);
+}
+
+.score-block,
+.rank-block {
+    display: grid;
+}
+
+.score-block span,
+.rank-block span {
+    color: #6d7e7f;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.score-block strong {
+    color: #e97b26;
+    font-size: 2.4rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.rank-block {
+    padding-left: 1.25rem;
+    border-left: 1px solid #d9ddd1;
+}
+
+.rank-block strong {
+    color: #1e5e61;
+    font-size: 1rem;
+}
+
+.game-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.control-button {
+    padding: 0.65rem 0.9rem;
+    border: 1px solid #205c5d;
+    border-radius: 999px;
+    background: #205c5d;
+    color: #fff;
+    font-size: 0.82rem;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.control-button:hover,
+.control-button:focus-visible {
+    background: #17494b;
+}
+
+.control-button--quiet {
+    background: transparent;
+    color: #205c5d;
+}
+
+.control-button--quiet:hover,
+.control-button--quiet:focus-visible {
+    background: #e8f1e9;
+}
+
+.pond {
+    --pond-width: min(calc(100vw - 2.5rem), 76rem);
+    position: relative;
+    min-height: clamp(24rem, 53vw, 38rem);
+    overflow: hidden;
+    isolation: isolate;
+    background:
+        linear-gradient(180deg, transparent 0 64%, rgb(255 255 255 / 28%) 64% 65%, transparent 65%),
+        linear-gradient(180deg, #9fe0e5 0 64%, #55bdba 64% 72%, #178c88 100%);
+}
+
+.pond::before,
+.pond::after {
+    position: absolute;
+    right: -8%;
+    bottom: 17%;
+    left: -8%;
+    z-index: -1;
+    height: 2.6rem;
+    border-top: 3px solid rgb(230 255 241 / 32%);
+    border-radius: 50%;
+    content: "";
+    transform: rotate(-2deg);
+}
+
+.pond::after {
+    bottom: 5%;
+    border-color: rgb(15 92 94 / 32%);
+    transform: rotate(2deg);
+}
+
+.sun {
+    position: absolute;
+    top: 2.25rem;
+    right: 7%;
+    width: 5.25rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #ffcf58;
+    box-shadow: 0 0 0 1rem rgb(255 228 139 / 28%);
+}
+
+.cloud {
+    position: absolute;
+    top: 3rem;
+    left: 9%;
+    width: 6.5rem;
+    height: 1.7rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 72%);
+}
+
+.cloud::before,
+.cloud::after {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+    background: inherit;
+    content: "";
+}
+
+.cloud::before {
+    left: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+}
+
+.cloud::after {
+    right: 1rem;
+    width: 3.25rem;
+    height: 3.25rem;
+}
+
+.cloud--two {
+    top: 7.5rem;
+    left: 42%;
+    transform: scale(0.65);
+    opacity: 0.62;
+}
+
+.duck {
+    position: absolute;
+    top: var(--duck-top);
+    z-index: 2;
+    width: var(--duck-size);
+    margin: 0;
+    padding: 0.35rem;
+    border: 0;
+    border-radius: 50%;
+    outline-offset: 0.15rem;
+    background: transparent;
+    cursor: pointer;
+    will-change: transform;
+    animation-delay: var(--duck-delay);
+    animation-duration: var(--duck-speed);
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.duck:hover img,
+.duck:focus-visible img {
+    filter: drop-shadow(0 0.55rem 0 rgb(17 89 83 / 20%)) brightness(1.06);
+    transform: translateY(-0.35rem) rotate(var(--duck-tilt)) scale(1.08);
+}
+
+.duck:active img {
+    transform: rotate(var(--duck-tilt)) scale(0.88);
+}
+
+.duck img {
+    display: block;
+    width: 100%;
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 0.55rem 0 rgb(17 89 83 / 16%));
+    transform: rotate(var(--duck-tilt));
+    transition: filter 140ms ease, transform 140ms ease;
+    animation: duck-bob 1.45s ease-in-out infinite alternate;
+}
+
+.duck--from-left {
+    left: -10rem;
+    animation-name: swim-from-left;
+}
+
+.duck--from-right {
+    right: -10rem;
+    animation-name: swim-from-right;
+}
+
+.duck--from-right img {
+    transform: scaleX(-1) rotate(var(--duck-tilt));
+}
+
+.duck--from-right:hover img,
+.duck--from-right:focus-visible img {
+    transform: scaleX(-1) translateY(-0.35rem) rotate(var(--duck-tilt)) scale(1.08);
+}
+
+.pond--paused .duck,
+.pond--paused .duck img {
+    animation-play-state: paused;
+}
+
+.pause-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 5;
+    width: min(24rem, calc(100% - 2rem));
+    display: grid;
+    gap: 0.25rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgb(255 255 255 / 60%);
+    border-radius: 1rem;
+    background: rgb(19 73 75 / 88%);
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 1rem 2rem rgb(11 67 67 / 18%);
+    transform: translate(-50%, -50%);
+    backdrop-filter: blur(0.5rem);
+}
+
+.pause-card strong {
+    font-size: 1.2rem;
+}
+
+.pause-card span {
+    color: #c9efea;
+    font-size: 0.88rem;
+}
+
+.water-line {
+    position: absolute;
+    right: -5%;
+    bottom: 29%;
+    left: -5%;
+    z-index: 1;
+    height: 0.35rem;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 35%);
+    transform: rotate(1deg);
+}
+
+.reed {
+    position: absolute;
+    bottom: -1rem;
+    left: 5%;
+    z-index: 3;
+    width: 0.55rem;
+    height: 8rem;
+    border-radius: 50% 50% 0 0;
+    background: #235f45;
+    box-shadow: 1.2rem 1.4rem 0 -0.12rem #367654, 2.1rem -0.5rem 0 -0.18rem #194f3a;
+    transform: rotate(-6deg);
+}
+
+.reed--two {
+    right: 7%;
+    left: auto;
+    height: 6rem;
+    transform: rotate(8deg) scale(0.8);
+}
+
+.game-footer {
+    min-height: 4.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1.25rem;
+    color: #60777b;
+    font-size: 0.86rem;
+}
+
+.game-footer p {
+    margin: 0;
+}
+
+.game-footer span {
+    flex: none;
+    color: #1e5e61;
+    font-weight: 800;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@keyframes swim-from-left {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(var(--pond-width) + 14rem)); }
+}
+
+@keyframes swim-from-right {
+    from { transform: translateX(0); }
+    to { transform: translateX(calc(0rem - var(--pond-width) - 14rem)); }
+}
+
+@keyframes duck-bob {
+    from { margin-top: -0.3rem; }
+    to { margin-top: 0.3rem; }
+}
+
+@media (max-width: 640px) {
+    .shell {
+        width: min(100% - 1rem, 76rem);
+    }
+
+    .brand span,
+    .rank-block span {
+        display: none;
+    }
+
+    main {
+        padding-top: 0.25rem;
+    }
+
+    .game-intro {
+        margin-bottom: 1rem;
+    }
+
+    .scoreboard {
+        grid-template-columns: auto 1fr;
+        gap: 0.75rem;
+        padding: 0.75rem;
+    }
+
+    .rank-block {
+        padding-left: 0.75rem;
+    }
+
+    .game-actions {
+        grid-column: 1 / -1;
+    }
+
+    .control-button {
+        flex: 1;
+    }
+
+    .pond {
+        --pond-width: calc(100vw - 1rem);
+        min-height: 25rem;
+    }
+
+    .game-footer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .duck,
+    .duck img {
+        animation: none;
+    }
+
+    .duck--from-left,
+    .duck--from-right {
+        right: auto;
+        left: var(--duck-top);
+    }
+}
