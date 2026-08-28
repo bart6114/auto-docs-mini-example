@@ -7,8 +7,8 @@ import styles from './index.module.css';
 
 const cards = [
   {
-    title: 'Catch every duck',
-    body: 'Start with three ducks, click the ones crossing the pond, and watch the flock grow.',
+    title: 'Catch every bird',
+    body: 'Start with three birds, click the ones crossing the pond, and watch the flock grow.',
     to: '/docs/product/click-a-duck',
   },
   {
@@ -31,10 +31,10 @@ export default function Home(): ReactNode {
       <header className={styles.hero}>
         <div className="container">
           <p className={styles.eyebrow}>The pond is getting crowded</p>
-          <Heading as="h1">Click ducks. Grow the flock. Earn the title.</Heading>
+          <Heading as="h1">Click ducks. Catch a swan. Earn the title.</Heading>
           <p className={styles.subtitle}>
-            Catch ducks as they cross the pond. Each click adds a point, and every milestone
-            brings a grander rank and more ducks to chase.
+            Catch birds as they cross the pond. Ducks are worth one point, swans are worth
+            five, and every milestone brings a grander rank and more birds to chase.
           </p>
           <div className={styles.actions}>
             <Link className="button button--primary button--lg" to="/docs/product/click-a-duck">

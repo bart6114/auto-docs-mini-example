@@ -34,22 +34,29 @@
             </div>
         </div>
 
-        <div class="@PondClass" role="group" aria-label="Duck pond. Click the moving ducks to count them.">
+        <div class="@PondClass" role="group" aria-label="Duck pond. Click moving birds to score. Swans are worth five points.">
             <div class="sun" aria-hidden="true"></div>
             <div class="cloud cloud--one" aria-hidden="true"></div>
             <div class="cloud cloud--two" aria-hidden="true"></div>
             <div class="reed reed--one" aria-hidden="true"></div>
             <div class="reed reed--two" aria-hidden="true"></div>
 
-            @foreach (var duck in ducks)
+            @foreach (var bird in birds)
             {
-                <button class="duck @duck.DirectionClass"
-                        @key="duck.Id"
-                        style="@DuckStyle(duck)"
+                <button class="bird @bird.DirectionClass"
+                        @key="bird.Id"
+                        style="@BirdStyle(bird)"
                         type="button"
-                        aria-label="Count this duck"
-                        @onclick="() => CountDuck(duck.Id)">
-                    <img src="images/click-a-duck.png" alt="" draggable="false" />
+                        aria-label="@BirdLabel(bird)"
+                        @onclick="() => CountBird(bird.Id)">
+                    @if (bird.Kind is BirdKind.Swan)
+                    {
+                        <span class="bird__visual bird__swan" aria-hidden="true">🦢</span>
+                    }
+                    else
+                    {
+                        <img class="bird__visual" src="images/click-a-duck.png" alt="" draggable="false" />
+                    }
                 </button>
             }
 
@@ -65,15 +72,16 @@
         </div>
 
         <div class="game-footer">
-            <p>Click every duck you can catch. A larger, faster flock arrives as your score climbs.</p>
-            <span>@ducks.Count duck@(ducks.Count == 1 ? "" : "s") on the pond</span>
+            <p>Click every bird you can catch. A rare swan is worth five points.</p>
+            <span>@birds.Count bird@(birds.Count == 1 ? "" : "s") on the pond</span>
         </div>
     </section>
 </div>
 
 @code {
     private readonly CancellationTokenSource cancellation = new();
-    private readonly List<DuckTarget> ducks = [];
+    private readonly List<BirdTarget> birds = [];
+    private const int SwanOddsDenominator = 10;
     private int score;
     private bool isPaused;
     private Task? spawnLoop;
@@ -83,24 +91,24 @@
 
     protected override void OnInitialized()
     {
-        AddDuck(startInPond: true);
-        AddDuck(startInPond: true);
-        AddDuck(startInPond: true);
+        AddBird(startInPond: true);
+        AddBird(startInPond: true);
+        AddBird(startInPond: true);
         spawnLoop = GrowFlockAsync(cancellation.Token);
     }
 
-    private void CountDuck(Guid id)
+    private void CountBird(Guid id)
     {
         if (isPaused)
         {
             return;
         }
 
-        var removed = ducks.RemoveAll(duck => duck.Id == id);
-        if (removed == 1)
+        var bird = birds.SingleOrDefault(bird => bird.Id == id);
+        if (bird is not null && birds.Remove(bird))
         {
-            score = DuckGame.CountDuck(score);
-            AddDuck();
+            score = DuckGame.CountBird(score, bird.Kind);
+            AddBird();
         }
     }
 
@@ -110,10 +118,10 @@
     {
         score = 0;
         isPaused = false;
-        ducks.Clear();
-        AddDuck(startInPond: true);
-        AddDuck(startInPond: true);
-        AddDuck(startInPond: true);
+        birds.Clear();
+        AddBird(startInPond: true);
+        AddBird(startInPond: true);
+        AddBird(startInPond: true);
     }
 
     private async Task GrowFlockAsync(CancellationToken cancellationToken)
@@ -125,9 +133,9 @@
                 await Task.Delay(DuckGame.SpawnDelayFor(score), cancellationToken);
                 await InvokeAsync(() =>
                 {
-                    if (!isPaused && ducks.Count < DuckGame.FlockLimitFor(score))
+                    if (!isPaused && birds.Count < DuckGame.FlockLimitFor(score))
                     {
-                        AddDuck();
+                        AddBird();
                         StateHasChanged();
                     }
                 });
@@ -138,22 +146,27 @@
         }
     }
 
-    private void AddDuck(bool startInPond = false)
+    private void AddBird(bool startInPond = false)
     {
         var fromLeft = Random.Shared.Next(2) == 0;
         var duration = Random.Shared.Next(8, 15);
-        ducks.Add(new DuckTarget(
+        birds.Add(new BirdTarget(
             Guid.NewGuid(),
+            Random.Shared.Next(SwanOddsDenominator) == 0 ? BirdKind.Swan : BirdKind.Duck,
             Random.Shared.Next(8, 72),
             Random.Shared.Next(74, 121),
             duration,
             startInPond ? Random.Shared.Next(-duration + 1, 0) : 0,
             Random.Shared.Next(-7, 8),
-            fromLeft ? "duck--from-left" : "duck--from-right"));
+            fromLeft ? "bird--from-left" : "bird--from-right"));
     }
 
-    private static string DuckStyle(DuckTarget duck) => FormattableString.Invariant(
-        $"--duck-top: {duck.TopPercent}%; --duck-size: {duck.SizePixels}px; --duck-speed: {duck.DurationSeconds}s; --duck-delay: {duck.DelaySeconds}s; --duck-tilt: {duck.TiltDegrees}deg;");
+    private static string BirdStyle(BirdTarget bird) => FormattableString.Invariant(
+        $"--bird-top: {bird.TopPercent}%; --bird-size: {bird.SizePixels}px; --bird-speed: {bird.DurationSeconds}s; --bird-delay: {bird.DelaySeconds}s; --bird-tilt: {bird.TiltDegrees}deg;");
+
+    private static string BirdLabel(BirdTarget bird) => bird.Kind is BirdKind.Swan
+        ? "Count this swan for five points"
+        : "Count this duck for one point";
 
     public async ValueTask DisposeAsync()
     {
@@ -166,8 +179,9 @@
         cancellation.Dispose();
     }
 
-    private sealed record DuckTarget(
+    private sealed record BirdTarget(
         Guid Id,
+        BirdKind Kind,
         int TopPercent,
         int SizePixels,
         int DurationSeconds,

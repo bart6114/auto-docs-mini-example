@@ -266,11 +266,11 @@ h1 {
     opacity: 0.62;
 }
 
-.duck {
+.bird {
     position: absolute;
-    top: var(--duck-top);
+    top: var(--bird-top);
     z-index: 2;
-    width: var(--duck-size);
+    width: var(--bird-size);
     margin: 0;
     padding: 0.35rem;
     border: 0;
@@ -279,54 +279,64 @@ h1 {
     background: transparent;
     cursor: pointer;
     will-change: transform;
-    animation-delay: var(--duck-delay);
-    animation-duration: var(--duck-speed);
+    animation-delay: var(--bird-delay);
+    animation-duration: var(--bird-speed);
     animation-timing-function: linear;
     animation-iteration-count: infinite;
 }
 
-.duck:hover img,
-.duck:focus-visible img {
+.bird:hover .bird__visual,
+.bird:focus-visible .bird__visual {
     filter: drop-shadow(0 0.55rem 0 rgb(17 89 83 / 20%)) brightness(1.06);
-    transform: translateY(-0.35rem) rotate(var(--duck-tilt)) scale(1.08);
+    transform: translateY(-0.35rem) rotate(var(--bird-tilt)) scale(1.08);
 }
 
-.duck:active img {
-    transform: rotate(var(--duck-tilt)) scale(0.88);
+.bird:active .bird__visual {
+    transform: rotate(var(--bird-tilt)) scale(0.88);
 }
 
-.duck img {
+.bird__visual {
     display: block;
     width: 100%;
     pointer-events: none;
     user-select: none;
     filter: drop-shadow(0 0.55rem 0 rgb(17 89 83 / 16%));
-    transform: rotate(var(--duck-tilt));
+    transform: rotate(var(--bird-tilt));
     transition: filter 140ms ease, transform 140ms ease;
-    animation: duck-bob 1.45s ease-in-out infinite alternate;
+    animation: bird-bob 1.45s ease-in-out infinite alternate;
 }
 
-.duck--from-left {
+.bird__swan {
+    display: flex;
+    align-items: center;
+    aspect-ratio: 1;
+    justify-content: center;
+    font-family: "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+    font-size: calc(var(--bird-size) * 0.82);
+    line-height: 1;
+}
+
+.bird--from-left {
     left: -10rem;
     animation-name: swim-from-left;
 }
 
-.duck--from-right {
+.bird--from-right {
     right: -10rem;
     animation-name: swim-from-right;
 }
 
-.duck--from-right img {
-    transform: scaleX(-1) rotate(var(--duck-tilt));
+.bird--from-right .bird__visual {
+    transform: scaleX(-1) rotate(var(--bird-tilt));
 }
 
-.duck--from-right:hover img,
-.duck--from-right:focus-visible img {
-    transform: scaleX(-1) translateY(-0.35rem) rotate(var(--duck-tilt)) scale(1.08);
+.bird--from-right:hover .bird__visual,
+.bird--from-right:focus-visible .bird__visual {
+    transform: scaleX(-1) translateY(-0.35rem) rotate(var(--bird-tilt)) scale(1.08);
 }
 
-.pond--paused .duck,
-.pond--paused .duck img {
+.pond--paused .bird,
+.pond--paused .bird__visual {
     animation-play-state: paused;
 }
 
@@ -433,7 +443,7 @@ h1 {
     to { transform: translateX(calc(0rem - var(--pond-width) - 14rem)); }
 }
 
-@keyframes duck-bob {
+@keyframes bird-bob {
     from { margin-top: -0.3rem; }
     to { margin-top: 0.3rem; }
 }
@@ -487,14 +497,14 @@ h1 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .duck,
-    .duck img {
+    .bird,
+    .bird__visual {
         animation: none;
     }
 
-    .duck--from-left,
-    .duck--from-right {
+    .bird--from-left,
+    .bird--from-right {
         right: auto;
-        left: var(--duck-top);
+        left: var(--bird-top);
     }
 }

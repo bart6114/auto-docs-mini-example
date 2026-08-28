@@ -2,7 +2,7 @@
 
 Click ducks, grow the flock, and collect increasingly grand titles. Click-a-Duck is a small .NET 10 Blazor game with a public [player and contributor handbook](https://bart6114.github.io/auto-docs-mini-example/).
 
-The game starts with three moving ducks. Each click scores a point and brings in a replacement. As the score rises, the pond admits more ducks and awards ranks from Pond paddler to Lord of the wings.
+The game starts with three moving birds. Clicking a duck scores a point, and clicking a rare swan scores five, with a replacement joining the pond either way. As the score rises, the pond admits more birds and awards ranks from Pond paddler to Lord of the wings.
 
 The repository also demonstrates a living-documentation workflow: open a pull request, and Claude checks whether the handbook still tells the truth.
 
