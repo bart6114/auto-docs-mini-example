@@ -42,4 +42,4 @@ jobs:
             Head branch: ${{ github.head_ref }}
           claude_args: |
             --max-turns 40
-            --allowedTools "Bash(npm --prefix docs ci),Bash(npm --prefix docs run typecheck),Bash(npm --prefix docs run build)"
+            --allowedTools "Bash(npm:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*)"
