@@ -36,7 +36,6 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          show_full_output: true
           prompt: |
             /autodoc
 
@@ -46,4 +45,4 @@ jobs:
             Head branch: ${{ github.head_ref }}
           claude_args: |
             --max-turns 60
-            --allowedTools "Skill,Read,Grep,Glob,Edit,Write,Bash(npm:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*)"
+            --allowedTools "Skill,Read,Grep,Glob,Edit,Write,Bash(npm:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*),Bash(git add:*),Bash(git commit:*),Bash(git push:*)"

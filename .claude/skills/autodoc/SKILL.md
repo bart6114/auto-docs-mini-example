@@ -1,7 +1,7 @@
 ---
 name: autodoc
 description: Review a Click-a-Duck pull request for documentation drift, update product or contributor documentation when facts changed, and validate the handbook before committing fixes.
-allowed-tools: Read Grep Glob Edit Write Skill Bash(git diff *) Bash(git log *) Bash(git status *) Bash(npm --prefix docs *)
+allowed-tools: Read Grep Glob Edit Write Skill Bash(git diff *) Bash(git log *) Bash(git status *) Bash(git add *) Bash(git commit *) Bash(git push *) Bash(npm --prefix docs *)
 ---
 
 # Keep the documentation true
