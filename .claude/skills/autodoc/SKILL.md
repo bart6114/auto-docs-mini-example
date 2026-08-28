@@ -8,7 +8,14 @@ allowed-tools: Read Grep Glob Edit Write Skill Bash(git diff *) Bash(git log *) 
 
 Invoke `/docs-humanizer` before writing, then follow its product-first voice rules throughout the review.
 
-Read `CLAUDE.md` and `AGENTS.md`, then review the complete pull-request diff against its base branch. Use the path map in `AGENTS.md` to find pages that may be stale, but let the changed code, tests, configuration, and workflows determine what is true.
+Read `CLAUDE.md` and `AGENTS.md`, then review the complete pull-request diff against its base branch. In GitHub Actions, use the base and head named in the prompt and inspect both of these before deciding that no documentation changed:
+
+```bash
+git diff --stat origin/<base-branch>...HEAD
+git diff origin/<base-branch>...HEAD --
+```
+
+Do not use an empty working-tree `git diff` as the pull-request diff. Use the path map in `AGENTS.md` to find pages that may be stale, but let the changed code, tests, configuration, and workflows determine what is true.
 
 Change documentation only when the pull request changes a reader-visible behavior, architecture boundary, prerequisite, command, configuration value, automation step, or ownership rule. A refactor that preserves those facts needs no documentation edit.
 

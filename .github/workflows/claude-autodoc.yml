@@ -33,7 +33,13 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          prompt: "/autodoc"
+          prompt: |
+            /autodoc
+
+            Repository: ${{ github.repository }}
+            Pull request: ${{ github.event.pull_request.number }}
+            Base branch: ${{ github.base_ref }}
+            Head branch: ${{ github.head_ref }}
           claude_args: |
             --max-turns 40
             --allowedTools "Bash(npm --prefix docs ci),Bash(npm --prefix docs run typecheck),Bash(npm --prefix docs run build)"
