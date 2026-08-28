@@ -41,5 +41,5 @@ jobs:
             Base branch: ${{ github.base_ref }}
             Head branch: ${{ github.head_ref }}
           claude_args: |
-            --max-turns 40
-            --allowedTools "Bash(npm:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*)"
+            --max-turns 60
+            --allowedTools "Skill,Read,Grep,Glob,Edit,Write,Bash(npm:*),Bash(git diff:*),Bash(git log:*),Bash(git status:*)"
