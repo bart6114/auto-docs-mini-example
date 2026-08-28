@@ -17,6 +17,8 @@ git diff origin/<base-branch>...HEAD --
 
 Do not use an empty working-tree `git diff` as the pull-request diff. Use the path map in `AGENTS.md` to find pages that may be stale, but let the changed code, tests, configuration, and workflows determine what is true.
 
+The GitHub workflow fetches `origin/<base-branch>` before invoking this skill. Do not run `git fetch` or ask for permission to fetch.
+
 Change documentation only when the pull request changes a reader-visible behavior, architecture boundary, prerequisite, command, configuration value, automation step, or ownership rule. A refactor that preserves those facts needs no documentation edit.
 
 You may edit only `README.md`, `docs/docs/**`, and `docs/src/pages/**`. Do not change application code, tests, workflow files, agent instructions, skills, or Docusaurus configuration. Update an existing page instead of creating a near-duplicate.
