@@ -10,14 +10,14 @@ Click-a-Duck uses a Blazor Web App on .NET 10 with interactive server rendering.
 
 ```text
 Browser
-  │  duck and control clicks over the Blazor connection
+  │  bird and control clicks over the Blazor connection
   ▼
 Home.razor
-  ├── random duck position and CSS movement
+  ├── random bird kind, position, and CSS movement
   └── current score
   ▼
 DuckGameService
-  │  deterministic rank, flock limit, and spawn delay
+  │  deterministic score, rank, flock limit, and spawn delay
   ▼
 Rendered pond and scoreboard
 ```
@@ -26,7 +26,7 @@ Rendered pond and scoreboard
 
 | Path | Responsibility |
 | --- | --- |
-| `src/ClickADuck/Components/Pages/Home.razor` | Pond state, random duck appearance, spawn loop, pause, reset, and clicks |
+| `src/ClickADuck/Components/Pages/Home.razor` | Pond state, random bird appearance, spawn loop, pause, reset, and clicks |
 | `src/ClickADuck/Services/DuckGameService.cs` | Score increments, ranks, flock limits, and spawn delays |
 | `src/ClickADuck/Program.cs` | Service registration and the HTTP pipeline |
 | `tests/ClickADuck.Tests/DuckGameServiceTests.cs` | Executable examples for every deterministic game rule |
@@ -39,6 +39,6 @@ It gives the example one clear boundary to document and test. The page handles t
 
 ## Interaction and state
 
-The page uses interactive server rendering, so clicks travel over the Blazor connection and update component state on the server. The score and active ducks live only in the current component. Refreshing or leaving the page starts a new game; there is no saved progress.
+The page uses interactive server rendering, so clicks travel over the Blazor connection and update component state on the server. The score and active birds live only in the current component. Refreshing or leaving the page starts a new game; there is no saved progress.
 
-Each visible duck has a generated identifier and random movement values. Clicking removes the matching identifier, asks `DuckGameService` for the next score, and adds a replacement. The service rejects negative scores so its rules never need to define an invalid game state.
+Each visible bird has a generated identifier, a kind (duck or swan), and random movement values. Clicking removes the matching identifier, asks `DuckGameService` for the next score based on that kind, and adds a replacement. The service rejects negative scores so its rules never need to define an invalid game state.
