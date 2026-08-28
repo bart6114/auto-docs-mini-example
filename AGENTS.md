@@ -53,6 +53,20 @@ When documentation changes:
 - Run the Docusaurus type check and production build.
 - Follow `.claude/skills/autodoc/SKILL.md` for documentation review and `.claude/skills/docs-humanizer/SKILL.md` for prose.
 
+## Reusing this repository as an autodoc example
+
+If you are studying Click-a-Duck to introduce living documentation in another repository, take away the pattern rather than the duck-specific paths:
+
+- Put the documentation contract in the repository. Define the source of truth, the documentation audiences, the path-to-page impact map, and the checks that make a change complete.
+- Keep the handbook beside the code and give it deterministic CI checks. The agent judges whether facts drifted; the type check and production build judge whether the site is valid.
+- Give the pull-request agent a focused maintenance skill. It must review the complete change against the base branch, edit only approved documentation paths, validate its edits, and leave an already-accurate branch unchanged.
+- Keep factual review separate from writing style. Here, `autodoc` decides what must change and `docs-humanizer` defines the product-first voice. Replace that writing reference with the terminology, examples, and tone required by the target product.
+- Let the pull-request workflow commit fixes to the development branch so the documentation diff remains visible and reviewable. Keep fork handling, bot-loop prevention, credentials, and branch protection explicit.
+
+Before enabling incremental pull-request maintenance in an existing codebase, perform a one-time documentation baseline. Ask the coding agent to read the repository instructions and analyze the complete codebase: user and operator workflows, architecture boundaries, configuration, commands, tests, and current documentation. Have it propose the information architecture and impact map, then work in bounded review, edit, validate, and gap-analysis loops until every reader-visible fact has an appropriate home and the full documentation suite passes its checks.
+
+With Claude Code, make `CLAUDE.md` import the shared `AGENTS.md` contract as this repository does. Explicitly ask Claude to read those instructions and perform the baseline audit. The pull-request workflow maintains that baseline; it is not a substitute for creating it.
+
 ## Code conventions
 
 - Keep `DuckGameService` deterministic and UI-independent.

@@ -92,12 +92,18 @@ GitHub doesn't expose repository secrets to workflows from forks, and the workfl
 
 ## Copy the pattern
 
-For a larger codebase, keep the same pieces and expand only the path map in `AGENTS.md`:
+Adopt the pattern in two phases. First establish a trustworthy documentation baseline; then maintain it with each pull request.
+
+For the baseline, ask your coding agent to read the repository instructions and inspect the complete codebase. It should map user and operator workflows, architecture boundaries, configuration, commands, tests, and existing pages. Let it work in review, edit, validation, and gap-analysis loops until every reader-visible fact has a clear home and the full documentation suite passes its checks. With Claude Code, use a small `CLAUDE.md` that imports the shared `AGENTS.md` contract, then explicitly ask Claude to perform this audit.
+
+For ongoing maintenance, keep the same pieces and expand the path map in `AGENTS.md`:
 
 1. Put user, operator, and architecture pages in Docusaurus.
 2. Map each source area to the pages it can invalidate.
 3. Make Docusaurus build failures block merging.
 4. Let the agent update writable development branches; keep protected-branch policy explicit.
 5. Review agent edits like any other code change.
+
+Keep factual review and writing style separate. In this example, `/autodoc` finds documentation drift while `/docs-humanizer` supplies the product voice. A larger project can replace that writing reference with its own terminology, examples, and tone.
 
 The useful automation isn't "generate a lot of text." It is "notice when an existing fact stopped being true, then fix it where reviewers can see the diff."

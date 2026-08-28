@@ -57,6 +57,23 @@ The OAuth token uses the linked Claude subscription instead of API billing. It i
 
 Repository secrets aren't sent to fork pull requests. The job also requires the pull-request branch to belong to this repository because it may push a documentation commit. Fork pull requests still run the read-only CI workflow.
 
+## Bootstrap an existing codebase
+
+Pull-request automation works best after the repository has a trustworthy documentation baseline. Create that baseline before asking the workflow to maintain it.
+
+Ask the coding agent to read the repository instructions and inspect the complete codebase. The first pass should cover user and operator workflows, architecture boundaries, configuration, local and CI commands, tests, and current documentation. Use that inventory to propose the handbook structure and the path-to-page impact map.
+
+Then work in bounded loops:
+
+1. Review one audience or source area and list the facts readers need.
+2. Update the existing page that owns those facts, or add a page only when no suitable home exists.
+3. Validate commands against the code and tests, then run the documentation checks.
+4. Perform another gap review and repeat until every reader-visible fact has a clear home.
+
+For Claude Code, make `CLAUDE.md` import the shared `AGENTS.md` contract and explicitly ask Claude to read both files before starting the baseline audit. Once that audit is complete, the pull-request workflow can maintain the result incrementally.
+
+Keep the factual audit separate from the writing rules. This repository's `autodoc` skill decides what documentation must change, while `docs-humanizer` defines the handbook's product-first voice. Replace the writing skill with a reference that captures the target product's terminology, examples, and tone.
+
 ## Publishing
 
 When a push to `main` changes `docs/**`, the Pages workflow installs the locked Node dependencies and builds Docusaurus. The build generates the site, `llms.txt`, `llms-full.txt`, and Markdown versions of each handbook page in `docs/build`. GitHub uploads that directory as a Pages artifact and deploys it to the `github-pages` environment.
